@@ -8,6 +8,8 @@ ${NAME}: *.c
 clean:
 	rm -f *.o ${NAME}
 
+docs:
+	doxygen
 
 .PHONY: ${NAME}
 
