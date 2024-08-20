@@ -12,36 +12,36 @@ static bool d_eq(double a, double b)
 	return fabs(a - b) < EPS;
 }
 
-sq_root_cnt_t solve_quadratic(double a, double b, double c, double* x1, double* x2)
+void solve_quadratic(quadratic_eq_t* eq)
 {
-	assert(isfinite(a));
-	assert(isfinite(b));
-	assert(isfinite(c));
+	assert(eq);
+	assert(isfinite(eq->a));
+	assert(isfinite(eq->b));
+	assert(isfinite(eq->c));
 
-	assert(x1);
-	assert(x2);
-	assert(x1 != x2);
-	
-	if(d_eq(a, 0) && d_eq(b, 0))
+	if(d_eq(eq->a, 0) && d_eq(eq->b, 0))
 	{
-		return (d_eq(c, 0)) ? INF_ROOTS: NO_ROOTS;
+		eq->cnt = (d_eq(eq->c, 0)) ? INF_ROOTS: NO_ROOTS;
+		return;
 	}
 
-	if(d_eq(a, 0))
+	if(d_eq(eq->a, 0))
 	{
-		*x1 = -c / b;
-		return ONE_ROOT;
+		eq->x1 = -eq->c / eq->b;
+		eq->cnt = ONE_ROOT;
+		return;
 	}
 
-	double d = (b * b) - 4 * a * c;
+	double d = (eq->b * eq->b) - 4 * eq->a * eq->c;
 
 	if (d < 0)
 	{
-		return NO_ROOTS;
+		eq->cnt = NO_ROOTS;
+		return;
 	}
 
-	*x1 = (-b + sqrt(d)) / (2 * a);
-	*x2 = (-b - sqrt(d)) / (2 * a);
+	eq->x1 = (-eq->b + sqrt(d)) / (2 * eq->a);
+	eq->x2 = (-eq->b - sqrt(d)) / (2 * eq->a);
 	
-	return (d_eq(d, 0)) ? ONE_ROOT : TWO_ROOTS;
+	eq->cnt = (d_eq(d, 0)) ? ONE_ROOT : TWO_ROOTS;
 }
