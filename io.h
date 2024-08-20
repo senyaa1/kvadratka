@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdint.h>
+#include "solver.h"
 
-uint8_t pretty_print_roots(uint8_t cnt, double x1, double x2);
-int read_coeffs(double* a, double* b, double* c);
+int pretty_print_roots(sq_root_cnt_t cnt, root_t x1, root_t x2);
+int read_coeffs(coeff_t* a, coeff_t* b, coeff_t* c);

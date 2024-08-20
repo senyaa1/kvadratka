@@ -4,7 +4,14 @@
 #include <math.h>
 #include <assert.h>
 
-const uint8_t SQ_INF_ROOTS = 123;
+typedef enum sq_root_cnt {
+	NO_ROOTS = 0,
+	ONE_ROOT = 1,
+	TWO_ROOTS = 2,
+	INF_ROOTS = 123
+} sq_root_cnt_t;
 
+typedef double coeff_t;
+typedef double root_t;
 
-uint8_t solve_quadratic(double a, double b, double c, double* x1, double* x2);
+sq_root_cnt_t solve_quadratic(coeff_t a, coeff_t b, coeff_t c, root_t* x1, root_t* x2);

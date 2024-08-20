@@ -5,7 +5,7 @@
 #include "solver.h"
 
 
-int read_coeffs(double* a, double* b, double* c)
+int read_coeffs(coeff_t* a, coeff_t* b, coeff_t* c)
 {
 	printf("лучшая квадратка v1.0.0\n");
 	printf("введи коэффы:\n");
@@ -29,20 +29,20 @@ int read_coeffs(double* a, double* b, double* c)
 	return read_nums;
 }
 
-uint8_t pretty_print_roots(uint8_t cnt, double x1, double x2)
+int pretty_print_roots(sq_root_cnt_t cnt, root_t x1, root_t x2)
 {
 	switch(cnt)
 	{
-		case 0:
+		case NO_ROOTS:
 			printf("Корней нет!\n");
 			return 0;
-		case 1:
+		case ONE_ROOT:
 			printf("Один корень - x1 = %lg\n", x1);
 			return 0;
-		case 2:
+		case TWO_ROOTS:
 			printf("Два корня - x1 = %lg\tx2 = %lg\n", x1, x2);
 			return 0;
-		case SQ_INF_ROOTS:
+		case INF_ROOTS:
 			printf("Бесконечное кол-во корней!\n");
 			return 0; 
 		default:
