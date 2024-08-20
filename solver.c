@@ -18,13 +18,13 @@ uint8_t solve_quadratic(double a, double b, double c, double* x1, double* x2)
 	assert(isfinite(b));
 	assert(isfinite(c));
 
-	assert(x1 != 0);
-	assert(x2 != 0);
+	assert(x1);
+	assert(x2);
 	assert(x1 != x2);
 	
 	if(d_eq(a, 0) && d_eq(b, 0))
 	{
-		return (c == 0) ? SQ_INF_ROOTS : 0;
+		return (d_eq(c, 0)) ? SQ_INF_ROOTS : 0;
 	}
 
 	if(d_eq(a, 0))

@@ -1,17 +1,16 @@
 #include <stdint.h>
 #include <stdio.h>
-#include <stdlib.h>
 
 #include "io.h"
 #include "solver.h"
 
 
-uint8_t read_coeffs(double* a, double* b, double* c)
+int read_coeffs(double* a, double* b, double* c)
 {
 	printf("лучшая квадратка v1.0.0\n");
 	printf("введи коэффы:\n");
 	
-	uint8_t read_nums = 0;
+	int read_nums = 0;
 
 	printf("a: ");
 	read_nums += scanf("%lg", a);
