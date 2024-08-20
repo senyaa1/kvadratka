@@ -1,3 +1,10 @@
+/** @file io.c
+ *  @brief File with input/output functions
+ *
+ *  Contains functions to handle input and output of kvadratka 
+ */
+
+
 #include <stdint.h>
 #include <stdio.h>
 

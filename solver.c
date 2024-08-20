@@ -1,3 +1,9 @@
+/** @file solver.c
+ *  @brief File with a function to solve quadratic equations
+ *
+ *  Contains functions to solve quadratic equations with specified accuracy
+ */
+
 #include <stdint.h>
 #include <math.h>
 #include <assert.h>

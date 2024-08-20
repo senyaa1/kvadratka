@@ -1,3 +1,8 @@
+/** @file solver.h
+ *  @brief File with a function to solve quadratic equations
+ *
+ *  Contains functions to solve quadratic equations with specified accuracy
+ */
 #pragma once
 
 #include <stdint.h>
@@ -26,5 +31,11 @@ typedef struct quadratic_eq {
 	sq_root_cnt_t cnt;
 } quadratic_eq_t;
 
+
+/** @brief Solves quadratic equation
+*
+*  @param eq Quadratic equation to be solved
+*  @return void.
+*/
 
 void solve_quadratic(quadratic_eq_t* eq);
