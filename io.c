@@ -4,29 +4,33 @@
 #include "io.h"
 #include "solver.h"
 
+static void read_until_correct(const char* text, coeff_t* a)
+{
+	int read_nums = 0;
 
-int read_coeffs(quadratic_eq_t* eq)
+	while(read_nums != 1)
+	{
+		printf("%s", text);
+		read_nums = scanf("%lg", a);
+		if(read_nums == 1)
+			break;
+
+		printf("коэффы введены неправильно! Ещё раз\n");
+
+		while ( getchar() != '\n' ); // чистим буффер
+	}
+}
+
+void read_coeffs(quadratic_eq_t* eq)
 {
 	printf("лучшая квадратка v1.0.0\n");
 	printf("введи коэффы:\n");
 	
-	int read_nums = 0;
-
-	printf("a: ");
-	read_nums += scanf("%lg", &eq->a);
-	printf("b: ");
-	read_nums += scanf("%lg", &eq->b);
-	printf("c: ");
-	read_nums += scanf("%lg", &eq->c);
-
-	if(read_nums != 3)
-	{
-		printf("коэффы введены неправильно!\n");
-		return read_nums;
-	}
+	read_until_correct("a: ", &eq->a);
+	read_until_correct("b: ", &eq->b);
+	read_until_correct("c: ", &eq->c);
 
 	printf("коэффы приняты!\n");
-	return read_nums;
 }
 
 int pretty_print_roots(quadratic_eq_t* eq)
