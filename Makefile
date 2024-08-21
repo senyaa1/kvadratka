@@ -6,6 +6,9 @@ SRCDIR=src
 OUTDIR=bin
 DOCSDIR=docs
 
+prepare:
+	mkdir -p ${OUTDIR} ${DOCSDIR}
+ 
 ${OUTDIR}/${NAME}: ${SRCDIR}/*.c
 	${CC} -o $@ $^ ${CFLAGS}
 
@@ -15,7 +18,7 @@ ${DOCSDIR}/*:
 	doxygen
 
 clean:
-	rm -rf ${OUTDIR}/* ${DOCSDIR}/* 
+	rm -rf ${OUTDIR} ${DOCSDIR}
 
-all: ${OUTDIR}/${NAME} docs
+all: prepare ${OUTDIR}/${NAME} docs
 
