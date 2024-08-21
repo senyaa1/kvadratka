@@ -32,4 +32,4 @@ do_test:
 
 test: preptest do_test
 
-all: prepare main docs
+all: prepare main docs test
