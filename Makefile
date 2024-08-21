@@ -4,17 +4,18 @@ NAME=kvadratka
 
 SRCDIR=src
 OUTDIR=bin
+DOCSDIR=docs
 
-${NAME}: ${SRCDIR}/*.c
-	${CC} -o ${OUTDIR}/${NAME} $^ ${CFLAGS}
+${OUTDIR}/${NAME}: ${SRCDIR}/*.c
+	${CC} -o $@ $^ ${CFLAGS}
 
-clean:
-	rm -f ${OUTDIR}/*
+docs: ${DOCSDIR}/*
 
-docs:
+${DOCSDIR}/*:
 	doxygen
 
-all: ${NAME} docs
+clean:
+	rm -rf ${OUTDIR}/* ${DOCSDIR}/* 
 
-.PHONY: ${NAME}
+all: ${OUTDIR}/${NAME} docs
 
