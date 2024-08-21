@@ -34,7 +34,7 @@ static void read_until_correct(const char* text, coeff_t* a)
 		if(read_nums == 1)
 			break;
 
-		printf("коэффы введены неправильно! Ещё раз\n");
+		printf("coefficient is incorrect! Enter again..\n");
 
 		while ( getchar() != '\n' ); // чистим буффер
 	}
@@ -42,14 +42,14 @@ static void read_until_correct(const char* text, coeff_t* a)
 
 void read_coeffs(quadratic_eq_t* eq)
 {
-	printf("лучшая квадратка v1.0.0\n");
-	printf("введи коэффы:\n");
+	printf("best quadratic equation solver v1.0.0\n");
+	printf("enter coefficients:\n");
 	
 	read_until_correct("a: ", &eq->a);
 	read_until_correct("b: ", &eq->b);
 	read_until_correct("c: ", &eq->c);
 
-	printf("коэффы приняты!\n");
+	printf("coefficients ok!\n");
 }
 
 int pretty_print_roots(quadratic_eq_t* eq)
@@ -57,20 +57,20 @@ int pretty_print_roots(quadratic_eq_t* eq)
 	switch(eq->cnt)
 	{
 		case NO_ROOTS:
-			printf("Корней нет!\n");
+			printf("No roots\n");
 			return 0;
 		case ONE_ROOT:
-			printf("Один корень - x1 = %lg\n", eq->x1);
+			printf("One root - x1 = %lg\n", eq->x1);
 			return 0;
 		case TWO_ROOTS:
-			printf("Два корня - x1 = %lg\tx2 = %lg\n", eq->x1, eq->x2);
+			printf("Two roots - x1 = %lg\tx2 = %lg\n", eq->x1, eq->x2);
 			return 0;
 		case INF_ROOTS:
-			printf("Бесконечное кол-во корней!\n");
+			printf("Infinite amount of roots\n");
 			return 0; 
 		case NOT_CALCULATED:
 		default:
-			printf("это что такое?!?!!?!!?!\n!");
+			printf("this really should not happen");
 			return 1;
 	}
 }
