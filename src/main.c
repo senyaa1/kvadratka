@@ -4,6 +4,7 @@
  *  Contains main function which runs kvadratka
  */
 #include <stdint.h>
+#include <stdio.h>
 #include "solver.h"
 #include "io.h"
 
@@ -20,11 +21,19 @@ int main(int argc, char** argv)
 	if (argc == 4)
 	{
 		if(!read_coeffs_from_argv(&eq, argv)) 
+		{
+			printf("incorrect args!\n");
 			return 1;
+		}
+	}
+	else if(argc == 1)
+	{
+		read_coeffs(&eq);
 	}
 	else
 	{
-		read_coeffs(&eq);
+		printf("incorrect args!\n");
+		return 1;
 	}
 
 	solve_quadratic(&eq);
