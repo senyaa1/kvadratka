@@ -4,7 +4,6 @@
  *  Contains main function which runs kvadratka
  */
 #include <stdint.h>
-
 #include "solver.h"
 #include "io.h"
 
@@ -29,6 +28,5 @@ int main(int argc, char** argv)
 	}
 
 	solve_quadratic(&eq);
-
 	return pretty_print_roots(&eq);
 }

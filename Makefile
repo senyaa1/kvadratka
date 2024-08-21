@@ -6,11 +6,13 @@ SRCDIR=src
 OUTDIR=bin
 DOCSDIR=docs
 
-prepare:
-	mkdir -p ${OUTDIR} ${DOCSDIR}
+main: ${OUTDIR}/${NAME} 
  
 ${OUTDIR}/${NAME}: ${SRCDIR}/*.c
 	${CC} -o $@ $^ ${CFLAGS}
+
+prepare:
+	mkdir -p ${OUTDIR} ${DOCSDIR}
 
 docs: ${DOCSDIR}/*
 
@@ -20,5 +22,4 @@ ${DOCSDIR}/*:
 clean:
 	rm -rf ${OUTDIR} ${DOCSDIR}
 
-all: prepare ${OUTDIR}/${NAME} docs
-
+all: prepare main docs
