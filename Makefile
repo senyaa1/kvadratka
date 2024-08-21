@@ -6,6 +6,8 @@ SRCDIR=src
 OUTDIR=bin
 DOCSDIR=docs
 
+TEST=kvadratest
+
 main: ${OUTDIR}/${NAME} 
  
 ${OUTDIR}/${NAME}: ${SRCDIR}/*.c
@@ -21,5 +23,13 @@ ${DOCSDIR}/*:
 
 clean:
 	rm -rf ${OUTDIR} ${DOCSDIR}
+
+preptest:
+	cd ${TEST} && make
+
+do_test:
+	cd ${TEST} && ./${TEST}
+
+test: preptest do_test
 
 all: prepare main docs
