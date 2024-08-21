@@ -7,9 +7,21 @@
 
 #include <stdint.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 #include "io.h"
 #include "solver.h"
+
+bool read_coeffs_from_argv(quadratic_eq_t* eq, char** argv)
+{
+	int cnt = 0;
+
+	cnt += sscanf(argv[1], "%lg", &eq->a);
+	cnt += sscanf(argv[2], "%lg", &eq->b);
+	cnt += sscanf(argv[3], "%lg", &eq->c);
+
+	return cnt == 3;
+}
 
 static void read_until_correct(const char* text, coeff_t* a)
 {

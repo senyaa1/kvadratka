@@ -11,5 +11,7 @@ clean:
 docs:
 	doxygen
 
+all: ${NAME} docs
+
 .PHONY: ${NAME}
 
