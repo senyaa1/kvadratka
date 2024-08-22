@@ -10,13 +10,7 @@
 #include <stdbool.h>
 
 #include "solver.h"
-
-static const double EPS = 0.00001;
-
-static bool d_eq(double a, double b)
-{
-	return fabs(a - b) < EPS;
-}
+#include "comparators.h"
 
 void solve_quadratic(quadratic_eq_t* eq)
 {
