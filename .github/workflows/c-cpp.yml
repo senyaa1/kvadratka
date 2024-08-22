@@ -17,3 +17,11 @@ jobs:
       run: make prepare
     - name: compile
       run: make main
+    - name: Push release
+      uses: actions/create-release@v1
+      with:
+        files: |
+            bin/kvadratka
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
