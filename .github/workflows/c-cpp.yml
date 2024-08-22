@@ -18,10 +18,16 @@ jobs:
       run: make prepare
     - name: compile
       run: make main
+    - uses: actions/checkout@master
+    - name: Bump version and push tag
+      uses: laputansoft/github-tag-action@v4.6
+      with:
+          github_token: ${{ env.github-token }}
+          tag: ${{ steps.package-version.outputs.version }}
     - name: Push release
       uses: actions/create-release@v1
       with:
-        tag_name: v. ${{ github.ref }}
+        tag_name: ${{ steps.package-version.outputs.version }}
         release_name: Release ${{ github.ref }}
         files: |
             bin/kvadratka
