@@ -2,5 +2,3 @@
 overengineered kvadratka
 
 ### TODO
-    - unit tests
-    - googletest

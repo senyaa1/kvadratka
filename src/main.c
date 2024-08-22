@@ -5,7 +5,7 @@
  */
 #include <stdint.h>
 #include <stdio.h>
-#include <string.h>
+#include <unistd.h>
 #include "solver.h"
 #include "tester.h"
 #include "io.h"
@@ -20,6 +20,18 @@ int main(int argc, char** argv)
 {
 	quadratic_eq_t eq = (quadratic_eq_t){0, 0, 0, 0, 0, NOT_CALCULATED};
 
+	int opt;
+	while ((opt = getopt(argc, argv, "t")) != -1) {
+		switch (opt) {
+		        case 't': 
+				run_all_sq_tests();
+				return 0;
+		        default:
+				fprintf(stderr, "Usage: %s [-t] (coefficients)\n", argv[0]);
+				return 1;
+	        }	
+	}
+
 	switch(argc)
 	{
 		case 4:
@@ -29,20 +41,10 @@ int main(int argc, char** argv)
 				return 1;
 			}
 			break;
-		case 2:
-			if(strcmp(argv[1], "-t"))
-			{
-				printf("incorrect args!\n");
-				return 1;
-			}
-			run_all_sq_tests();
-			return 0;
+		default:
 		case 1:
 			read_coeffs(&eq);
 			break;
-		default:
-			printf("incorrect args!\n");
-			return 1;
 
 	}
 
