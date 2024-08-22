@@ -18,7 +18,7 @@ void print_test_result(const char* test_name, test_result_t result)
 			break;
 		default:
 		case TESTING_ERROR:
-			printf(RED "Error during testing! Verify test files!\n" RESET);
+			fprintf(stderr, RED "Error during testing! Verify test files!\n" RESET);
 			break;
 	}
 }

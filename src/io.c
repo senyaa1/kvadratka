@@ -34,9 +34,10 @@ static void read_until_correct(const char* text, coeff_t* a)
 		if(read_nums == 1)
 			break;
 
-		printf("coefficient is incorrect! Enter again..\n");
+		fprintf(stderr, "coefficient is incorrect! Enter again..\n");
 
-		while ( getchar() != '\n' ); // чистим буффер
+		while ( getchar() != '\n' ) // чистим буффер//EOF
+			;
 	}
 }
 
@@ -70,7 +71,7 @@ int pretty_print_roots(quadratic_eq_t* eq)
 			return 0; 
 		case NOT_CALCULATED:
 		default:
-			printf("this really should not happen");
+			fprintf(stderr, "this really should not happen");
 			return 1;
 	}
 }

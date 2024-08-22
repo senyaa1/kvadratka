@@ -27,11 +27,12 @@ int main(int argc, char** argv)
 	}
 
 	int opt;
-	while ((opt = getopt(argc, argv, "t")) != -1) {
+	while ((opt = getopt(argc, argv, "ht")) != -1) {
 		switch (opt) {
 		        case 't': 
 				run_all_sq_tests();
 				return 0;
+			case 'h':
 		        default:
 				if(argc == 4) break;
 				fprintf(stderr, "Usage: %s [-t] (coefficients)\n", argv[0]);

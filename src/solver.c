@@ -6,18 +6,18 @@
 
 #include <stdint.h>
 #include <math.h>
-#include <assert.h>
 #include <stdbool.h>
 
 #include "solver.h"
 #include "comparators.h"
+#include "basedssert.h"
 
 void solve_quadratic(quadratic_eq_t* eq)
 {
-	assert(eq);
-	assert(isfinite(eq->a));
-	assert(isfinite(eq->b));
-	assert(isfinite(eq->c));
+	basedssert(eq);
+	basedssert(isfinite(eq->a));
+	basedssert(isfinite(eq->b));
+	basedssert(isfinite(eq->c));
 
 	if(d_eq(eq->a, 0) && d_eq(eq->b, 0))
 	{
@@ -39,7 +39,6 @@ void solve_quadratic(quadratic_eq_t* eq)
 		eq->cnt = NO_ROOTS;
 		return;
 	}
-
 	eq->x1 = (-eq->b + sqrt(d)) / (2 * eq->a);
 	eq->x2 = (-eq->b - sqrt(d)) / (2 * eq->a);
 	
