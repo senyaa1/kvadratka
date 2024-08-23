@@ -3,6 +3,7 @@
 #include "tester.h"
 #include "solver.h"
 #include "comparators.h"
+#include "io.h"
 
 
 void print_test_result(const char* test_name, test_result_t result)

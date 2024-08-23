@@ -11,5 +11,9 @@
 #define WHT   "\x1B[37m"
 #define RESET "\x1B[0m"
 
-#define basedssert(expr) if(expr) { \
-	printf(RED "\nwhat the hell is that???? %s" YEL "\n" RESET WHT "\t\t\t   ^^^^ this happened in %s on line #%d\n" RESET, #expr, __FILE__, __LINE__); exit(-1);}
+#ifdef RELEASE
+#define basedssert(expr);
+#else
+#define basedssert(...) if(__VA_ARGS__) { \
+	printf(RED "\nwhat the hell is that???? %s" YEL "\n" RESET WHT "\t\t\t   ^^^^ this happened in %s on line #%d\n" RESET, (#__VA_ARGS__), __FILE__, __LINE__); abort(); }
+#endif

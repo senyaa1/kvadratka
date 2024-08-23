@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include "solver.h"
 #include "tester.h"
+#include "debugger.h"
 #include "io.h"
 
 /** @brief Kvadratka entry
@@ -18,6 +19,10 @@
  */
 int main(int argc, char** argv)
 {
+	setup_signals();
+
+	*(int*)(0) = 0;
+
 	quadratic_eq_t eq = (quadratic_eq_t){0, 0, 0, 0, 0, NOT_CALCULATED};
 
 	if(argc == 4 && read_coeffs_from_argv(&eq, argv)) 
