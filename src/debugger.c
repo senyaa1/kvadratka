@@ -3,10 +3,14 @@
 #include <signal.h>
 #include <ucontext.h>
 #include <stdio.h>
+#include <stdbool.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <execinfo.h>
 #include <string.h>
+#include <sys/mman.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 #include "debugger.h"
 #include "io.h"
 
@@ -18,6 +22,33 @@ struct sigaction siga;
 
 #define DUMP_SZ 15
 
+static pid_t *main_pid;
+
+static void call_the_fire_department()
+{
+	main_pid = (pid_t*)mmap(NULL, sizeof(pid_t), PROT_READ | PROT_WRITE, 
+                    MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+
+	
+	if (vfork() == 0) {
+		//child 
+		*main_pid = getpid();
+
+		exit(EXIT_SUCCESS);
+
+	} else {
+		// main
+		/*wait(NULL);*/
+
+	        printf("%d\n", *main_pid);
+		char to_run[100];
+		sprintf(to_run, "sudo /bin/gdb -p %d", *main_pid);
+		system(to_run);
+	        munmap(main_pid, sizeof *main_pid);
+	}
+	getchar();
+}
+
 static void signal_handler(int sig, siginfo_t *si, void* arg)
 {
 	ucontext_t *context = (ucontext_t *)arg;
@@ -26,7 +57,7 @@ static void signal_handler(int sig, siginfo_t *si, void* arg)
 	fprintf(stderr, RED "Caught exception! - %s\n" RESET, strsignal(sig));
 
 
-	fprintf(stderr, "Crash happened at " GRN "%p" RESET UNDERLINE "\n\nCode: < " RED, rip);
+	fprintf(stderr, "Crash happened at " GRN "%p" RESET "\n\nCode: < " UNDERLINE  RED, rip);
 
 	char code[DUMP_SZ * 3 + 2];
 	char newByte[4];
@@ -61,6 +92,11 @@ static void signal_handler(int sig, siginfo_t *si, void* arg)
 		fprintf(stderr, BLU "|-%s\n" RESET, strings[j]);
 	fprintf(stderr, "\n\n");
         free(strings); 
+
+	
+	call_the_fire_department();
+
+
 	abort();
 }
 
@@ -124,3 +160,8 @@ void setup_signals()
 		}
 	}
 }
+
+/*static struct shared_pool {*/
+/*	bool has_crashed;*/
+/*	void* rip_location;*/
+/*} shared_pool;*/
