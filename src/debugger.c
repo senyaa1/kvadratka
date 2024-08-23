@@ -28,24 +28,23 @@ static void signal_handler(int sig, siginfo_t *si, void* arg)
 
 	fprintf(stderr, "Crash happened at " GRN "%p" RESET UNDERLINE "\n\nCode: < " RED, rip);
 
-	char* code = (char*)calloc(DUMP_SZ * 3 + 2, sizeof(char));
-
+	char code[DUMP_SZ * 3 + 2];
 	char newByte[4];
+
 	for(int i = 0; i < DUMP_SZ; i++)
 	{
-		sprintf(newByte, "%hhx ", *(char*)(rip + i));
+		sprintf(newByte, "%02hhx ", *(char*)(rip + i));
 		strcat(code, newByte);
 	}
+
 	fprintf(stderr, "%s", code);
-	fprintf(stderr, RESET ">\n\n");
+	fprintf(stderr, RESET "... >\n\n");
 
-	char* systemcmd = (char*)calloc(DUMP_SZ * 3 + 2 + 256, sizeof(char));
-
+	char systemcmd[DUMP_SZ * 3 + 2 + 256];
 	sprintf(systemcmd, "echo \"%s\" | xxd -r -p | ndisasm -b 64 - 1>&2", code);
 	system(systemcmd);
+
 	fprintf(stderr, "\n");
-	free(systemcmd);
-	free(code);
 
 
 	void *buffer[BACKTRACE_MAX_SZ];
