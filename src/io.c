@@ -36,7 +36,7 @@ static void read_until_correct(const char* text, coeff_t* a)
 
 		fprintf(stderr, "coefficient is incorrect! Enter again..\n");
 
-		while ( getchar() != '\n' ) // чистим буффер//EOF
+		while ( getchar() != '\n' && getchar() != EOF ) 
 			;
 	}
 }

@@ -21,6 +21,28 @@ int main(int argc, char** argv)
 {
 	setup_signals();
 
+	if(check_ptr((void*)0, "r"))
+	{
+		printf("able to read zero\n");
+	
+	}
+	if(check_ptr((void*)0xbabe, "r"))
+	{
+		printf("able to read 0xbabe\n");
+	}
+
+	if(check_ptr(argv, "r"))
+	{
+		printf("able to read argv\n");
+	}
+
+	if(check_ptr(argv, "w"))
+	{
+		printf("able to write argv\n");
+	}
+
+	fflush(stdout);
+
 	*(int*)(0) = 0;
 
 	quadratic_eq_t eq = (quadratic_eq_t){0, 0, 0, 0, 0, NOT_CALCULATED};

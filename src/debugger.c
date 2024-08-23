@@ -1,4 +1,7 @@
+#define __USE_GNU
+
 #include <signal.h>
+#include <ucontext.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -13,9 +16,37 @@ static const int subscribed_signals[] = { SIGSEGV, SIGILL, SIGFPE };
 
 struct sigaction siga;
 
-static void signal_handler(int sig)
+#define DUMP_SZ 15
+
+static void signal_handler(int sig, siginfo_t *si, void* arg)
 {
-	printf(RED "Caught exception! - %s\n\n" RESET, strsignal(sig));
+	ucontext_t *context = (ucontext_t *)arg;
+	void* rip = (void*)context->uc_mcontext.gregs[REG_RIP];
+	
+	fprintf(stderr, RED "Caught exception! - %s\n" RESET, strsignal(sig));
+
+
+	fprintf(stderr, "Crash happened at " GRN "%p" RESET UNDERLINE "\n\nCode: < " RED, rip);
+
+	char* code = (char*)calloc(DUMP_SZ * 3 + 2, sizeof(char));
+
+	char newByte[4];
+	for(int i = 0; i < DUMP_SZ; i++)
+	{
+		sprintf(newByte, "%hhx ", *(char*)(rip + i));
+		strcat(code, newByte);
+	}
+	fprintf(stderr, "%s", code);
+	fprintf(stderr, RESET ">\n\n");
+
+	char* systemcmd = (char*)calloc(DUMP_SZ * 3 + 2 + 256, sizeof(char));
+
+	sprintf(systemcmd, "echo \"%s\" | xxd -r -p | ndisasm -b 64 - 1>&2", code);
+	system(systemcmd);
+	fprintf(stderr, "\n");
+	free(systemcmd);
+	free(code);
+
 
 	void *buffer[BACKTRACE_MAX_SZ];
 	int nptrs = backtrace(buffer, BACKTRACE_MAX_SZ);
@@ -25,20 +56,72 @@ static void signal_handler(int sig)
 		exit(EXIT_FAILURE);
 	}
 
-	printf("Backtrace (%d):\n", nptrs);
-	printf("-------------------------------------------------------\n");
+	fprintf(stderr, "Backtrace (%d):\n", nptrs);
+	fprintf(stderr, "-------------------------------------------------------\n");
 	for (int j = 0; j < nptrs; j++)
-		printf(BLU "|-%s\n" RESET, strings[j]);
-	printf("\n\n");
+		fprintf(stderr, BLU "|-%s\n" RESET, strings[j]);
+	fprintf(stderr, "\n\n");
         free(strings); 
 	abort();
 }
 
+bool check_ptr(void* ptr, const char* perms)
+{
+	FILE* fptr = fopen("/proc/self/maps", "r");
+	if(!fptr)
+	{
+		perror("fopen");
+		exit(EXIT_FAILURE);
+	}
+
+	void* from;
+	void* to;
+	char perm[5];
+	bool res = false;
+
+	while(fscanf(fptr, "%p", &from) == 1)
+	{
+		fgetc(fptr);
+		fscanf(fptr, "%p", &to);
+
+
+		if(ptr >= from && ptr <= to)
+		{
+			res = true;
+
+			fgetc(fptr);
+			fscanf(fptr, "%4s", perm);
+
+			/*fprintf(stderr, "%s\n", perm);*/
+			/*fprintf(stderr, "%s\n", perms);*/
+
+			for(int i = 0; i < strlen(perms); i++)
+				res &= (bool)strchr(perm, perms[i]);
+
+			break;
+		}
+		
+		/*printf("%p    -    %p\n", from, to);*/
+
+		while(fgetc(fptr) != '\n')
+			;
+	}
+	
+	fclose(fptr);
+	return res;
+}
+
 void setup_signals()
 {
-	siga.sa_handler = signal_handler;
+	siga.sa_sigaction = &signal_handler;
+	siga.sa_flags = SA_SIGINFO;
+
 	for(int i = 0; i < sizeof(subscribed_signals) / sizeof(int); i++)
 	{
-		sigaction(subscribed_signals[i], &siga, NULL);
+		if(sigaction(subscribed_signals[i], &siga, NULL))
+		{
+			perror("sigaction");
+			exit(EXIT_FAILURE);
+		}
 	}
 }
