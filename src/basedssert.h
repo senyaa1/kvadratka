@@ -14,6 +14,6 @@
 #ifdef RELEASE
 #define basedssert(expr);
 #else
-#define basedssert(...) if(__VA_ARGS__) { \
+#define basedssert(...) if(!__VA_ARGS__) { \
 	printf(RED "\nwhat the hell is that???? %s" YEL "\n" RESET WHT "\t\t\t   ^^^^ this happened in %s on line #%d\n" RESET, (#__VA_ARGS__), __FILE__, __LINE__); abort(); }
 #endif

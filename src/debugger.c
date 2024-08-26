@@ -96,8 +96,8 @@ static void signal_handler(int sig, siginfo_t *si, void* arg)
 
 	
 	call_the_fire_department();
-
-
+	/**/
+	/**/
 	abort();
 }
 
