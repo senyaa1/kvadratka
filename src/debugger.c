@@ -29,24 +29,25 @@ static void call_the_fire_department()
 	main_pid = (pid_t*)mmap(NULL, sizeof(pid_t), PROT_READ | PROT_WRITE, 
                     MAP_SHARED | MAP_ANONYMOUS, -1, 0);
 
+	*main_pid = getpid();
 	
-	if (vfork() == 0) {
+	if (fork() == 0) {
 		//child 
-		*main_pid = getpid();
+		char to_run[100];
 
+		sprintf(to_run, "sudo /bin/gdb -p %d", *main_pid);
+		system(to_run);
+
+	        munmap(main_pid, sizeof *main_pid);
+		
 		exit(EXIT_SUCCESS);
 
 	} else {
 		// main
-		/*wait(NULL);*/
-
-	        printf("%d\n", *main_pid);
-		char to_run[100];
-		sprintf(to_run, "sudo /bin/gdb -p %d", *main_pid);
-		system(to_run);
-	        munmap(main_pid, sizeof *main_pid);
+		wait(NULL);
+		/*raise(SIGINT);*/
 	}
-	getchar();
+	/*getchar();*/
 }
 
 static void signal_handler(int sig, siginfo_t *si, void* arg)
